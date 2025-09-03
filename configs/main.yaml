@@ -1,0 +1,10 @@
+postgres:
+  context_cancel_seconds: 3
+  port: 5432
+  host: postgres
+app:
+  host: 0.0.0.0
+  port: 8080
+  default_per_page: 20
+  default_page: 1
+  max_per_page: 100
