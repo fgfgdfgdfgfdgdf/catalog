@@ -41,6 +41,7 @@ type GiftQuery struct {
 	Search      string    `form:"search"`
 	Page        int64     `form:"page"`
 	PerPage     int64     `form:"perPage"`
+	RawQuery    string    `form:"-" json:"-"`
 }
 
 const (

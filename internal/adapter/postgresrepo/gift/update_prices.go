@@ -13,7 +13,7 @@ func (r *GiftRepository) UpdatePricesByRate(rate *entity.Rate) (int64, error) {
 
 	c := config.Pg()
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.CONTEXT_CANCEL_DURATION*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), c.ContextCancelDuration*time.Second)
 	defer cancel()
 
 	result := r.db.WithContext(ctx).

@@ -9,7 +9,7 @@ import (
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/entity"
 )
 
-func (r *GiftRepository) GetByQuery(q entity.GiftQuery) (*entity.PaginatedGiftResponse, error) {
+func (r *GiftRepository) GetByQuery(q *entity.GiftQuery) (*entity.PaginatedGiftResponse, error) {
 	pgConf := config.Pg()
 	appConf := config.App()
 
@@ -52,7 +52,7 @@ func (r *GiftRepository) GetByQuery(q entity.GiftQuery) (*entity.PaginatedGiftRe
 	offset := (page - 1) * perPage
 	query = query.Offset(int(offset)).Limit(int(perPage))
 
-	ctx, cancel := context.WithTimeout(context.Background(), pgConf.CONTEXT_CANCEL_DURATION*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), pgConf.ContextCancelDuration*time.Second)
 	defer cancel()
 
 	var (

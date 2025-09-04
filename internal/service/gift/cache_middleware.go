@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetGifts(c *gin.Context) {
+func (s *Service) Cache(c *gin.Context) {
 	rawQuery, ok := c.Get("queryParams")
 	if !ok {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -16,16 +16,11 @@ func (s *Service) GetGifts(c *gin.Context) {
 
 	q := rawQuery.(*entity.GiftQuery)
 
-	response, err := s.giftRepo.GetByQuery(q)
-	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+	items, err := s.cacheRepo.GetByQuery(q.RawQuery)
+	if err == nil {
+		c.AbortWithStatusJSON(http.StatusOK, items)
 		return
 	}
 
-	err = s.cacheRepo.SetQuery(q.RawQuery, response)
-	if err != nil {
-
-	}
-
-	c.JSON(http.StatusOK, response)
+	c.Next()
 }

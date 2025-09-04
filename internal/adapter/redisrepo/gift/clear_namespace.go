@@ -1,4 +1,4 @@
-package health
+package cachedGift
 
 import (
 	"context"
@@ -7,18 +7,16 @@ import (
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/config"
 )
 
-func (r *HealthRepository) CheckStatus() bool {
-	sqlDB, err := r.db.DB()
-	if err != nil {
-		return false
-	}
-
-	c := config.Pg()
+func (r *CacheRepository) ClearNamespace() error {
+	c := config.Rds()
 
 	ctx, cancel := context.WithTimeout(context.Background(), c.ContextCancelDuration*time.Second)
 	defer cancel()
 
-	err = sqlDB.PingContext(ctx)
+	cmd := r.db.FlushDB(ctx)
+	if cmd.Err() != nil {
+		return cmd.Err()
+	}
 
-	return err == nil
+	return nil
 }

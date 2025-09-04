@@ -10,11 +10,11 @@ import (
 
 func Init(g *gin.Engine, gs *service_gift.Service, rs *service_rate.Service, hs *service_health.Service) {
 
-	g.GET("/gifts", gs.GetGifts, middlewares.RateLimiter)
+	g.GET("/gifts", gs.GetGifts, gs.Cache, gs.QueryValidate, middlewares.RateLimiter)
 
 	g.GET("/healthz", hs.DBHealth)
 
-	admin := g.Group("/admin", middlewares.AdminAccess)
+	admin := g.Group("/admin")
 	{
 		admin.PUT("/rates", rs.UpdateRates)
 

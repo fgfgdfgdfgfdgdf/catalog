@@ -11,7 +11,7 @@ import (
 func (r *RateRepository) UpdateRates(newRate *entity.Rate) error {
 	c := config.Pg()
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.CONTEXT_CANCEL_DURATION*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), c.ContextCancelDuration*time.Second)
 	defer cancel()
 
 	tx := r.db.WithContext(ctx).Begin()

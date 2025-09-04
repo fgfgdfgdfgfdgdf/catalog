@@ -20,16 +20,28 @@ var (
 type configuration struct {
 	Postgres *Postgres    `yaml:"postgres"`
 	App      *Application `yaml:"app"`
+	Redis    *Redis       `yaml:"redis"`
 }
 
 type Postgres struct {
-	USER                    string
-	PASSWORD                string
-	HOST                    string `yaml:"host"`
-	NAME                    string
-	PORT                    string        `yaml:"port"`
-	CONTEXT_CANCEL_SECONDS  int64         `yaml:"context_cancel_seconds"`
-	CONTEXT_CANCEL_DURATION time.Duration `yaml:"-"`
+	USER                  string
+	PASSWORD              string
+	HOST                  string `yaml:"host"`
+	NAME                  string
+	PORT                  string        `yaml:"port"`
+	ContextCancelSeconds  int64         `yaml:"context_cancel_seconds"`
+	ContextCancelDuration time.Duration `yaml:"-"`
+}
+
+type Redis struct {
+	USER                  string
+	PASSWORD              string
+	HOST                  string        `yaml:"host"`
+	ContextCancelSeconds  int64         `yaml:"context_cancel_seconds"`
+	ContextCancelDuration time.Duration `yaml:"-"`
+	Key                   int64         `yaml:"context_cancel_seconds"`
+	KeyExpirationDuration time.Duration `yaml:"-"`
+	KeyExpirationSeconds  int64         `yaml:"key_expiration_seconds"`
 }
 
 type Application struct {
@@ -48,6 +60,7 @@ func Init() *Application {
 
 	c := &configuration{
 		Postgres: &Postgres{},
+		Redis:    &Redis{},
 	}
 
 	err = utils.ReadYaml(c, path)
@@ -55,11 +68,16 @@ func Init() *Application {
 		panic(err)
 	}
 
-	c.Postgres.CONTEXT_CANCEL_DURATION = time.Duration(c.Postgres.CONTEXT_CANCEL_SECONDS)
+	c.Postgres.ContextCancelDuration = time.Duration(c.Postgres.ContextCancelSeconds)
+	c.Redis.ContextCancelDuration = time.Duration(c.Redis.ContextCancelSeconds)
+	c.Redis.KeyExpirationDuration = time.Duration(c.Redis.KeyExpirationSeconds)
 
 	c.Postgres.PASSWORD = os.Getenv("POSTGRES_PASSWORD")
 	c.Postgres.USER = os.Getenv("POSTGRES_USER")
 	c.Postgres.NAME = os.Getenv("POSTGRES_DB")
+
+	c.Redis.PASSWORD = os.Getenv("REDIS_USER_PASSWORD")
+	c.Redis.USER = os.Getenv("REDIS_USER")
 
 	config = c
 
@@ -70,9 +88,8 @@ func Pg() *Postgres {
 	return config.Postgres
 }
 
-type MainConfig interface {
-	HOST() string
-	PORT() string
+func Rds() *Redis {
+	return config.Redis
 }
 
 func App() *Application {

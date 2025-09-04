@@ -19,5 +19,10 @@ func (s *Service) SyncGiftsPrices(c *gin.Context) {
 		return
 	}
 
+	err = s.cacheRepo.ClearNamespace()
+	if err != nil {
+
+	}
+
 	c.JSON(http.StatusOK, gin.H{"updated": updated})
 }
