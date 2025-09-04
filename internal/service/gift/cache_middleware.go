@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Cache(c *gin.Context) {
+func (s *Service) CacheMiddleware(c *gin.Context) {
 	rawQuery, ok := c.Get("queryParams")
 	if !ok {
 		c.AbortWithStatus(http.StatusInternalServerError)

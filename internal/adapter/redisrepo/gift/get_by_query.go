@@ -8,7 +8,7 @@ import (
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/entity"
 )
 
-func (r *CacheRepository) GetByQuery(q string) (*entity.PaginatedGiftResponse, error) {
+func (r *GiftRepository) GetByQuery(q string) (*entity.PaginatedGiftResponse, error) {
 	c := config.Rds()
 
 	ctx, cancel := context.WithTimeout(context.Background(), c.ContextCancelDuration*time.Second)

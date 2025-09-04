@@ -2,22 +2,25 @@ package api
 
 import (
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/middlewares"
-	service_gift "github.com/fgfgdfgdfgfdgdf/catalog/internal/service/gift"
-	service_health "github.com/fgfgdfgdfgfdgdf/catalog/internal/service/health"
-	service_rate "github.com/fgfgdfgdfgfdgdf/catalog/internal/service/rate"
+	"github.com/fgfgdfgdfgfdgdf/catalog/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
 
-func Init(g *gin.Engine, gs *service_gift.Service, rs *service_rate.Service, hs *service_health.Service) {
+func Init(g *gin.Engine, useCase *usecase.UseCase) {
 
-	g.GET("/gifts", gs.GetGifts, gs.Cache, gs.QueryValidate, middlewares.RateLimiter)
+	g.GET("/gifts",
+		useCase.Giftsvc.GetGifts,
+		useCase.Giftsvc.CacheMiddleware,
+		useCase.Giftsvc.ValidateQueryMiddleware,
+		middlewares.RateLimiter,
+	)
 
-	g.GET("/healthz", hs.DBHealth)
+	g.GET("/healthz", useCase.HealthSvc.DBHealth)
 
 	admin := g.Group("/admin")
 	{
-		admin.PUT("/rates", rs.UpdateRates)
+		admin.PUT("/rates", useCase.RateSvc.UpdateRates)
 
-		admin.POST("/prices/sync", gs.SyncGiftsPrices)
+		admin.POST("/prices/sync", useCase.Giftsvc.SyncGiftsPrices)
 	}
 }

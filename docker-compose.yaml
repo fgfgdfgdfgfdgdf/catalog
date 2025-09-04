@@ -20,7 +20,7 @@ services:
     container_name: redis_container
     env_file: .env
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - ./redisdata:/data
     healthcheck:

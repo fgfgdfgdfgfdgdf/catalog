@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) QueryValidate(c *gin.Context) {
+func (s *Service) ValidateQueryMiddleware(c *gin.Context) {
 	var q entity.GiftQuery
 
 	err := c.ShouldBindQuery(&q)
@@ -19,7 +19,7 @@ func (s *Service) QueryValidate(c *gin.Context) {
 
 	q.RawQuery = c.Request.URL.Query().Encode()
 
-	err = validateQuery(q)
+	err = validateQuery(&q)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
@@ -30,7 +30,7 @@ func (s *Service) QueryValidate(c *gin.Context) {
 	c.Next()
 }
 
-func validateQuery(q entity.GiftQuery) error {
+func validateQuery(q *entity.GiftQuery) error {
 	for _, item := range q.Sort.Items {
 		if _, ok := entity.GiftColumns[item.Column.Name]; !ok {
 			return errors.New("invalid name: " + item.Column.Name)

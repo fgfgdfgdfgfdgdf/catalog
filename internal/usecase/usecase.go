@@ -1,19 +1,24 @@
 package usecase
 
+import "github.com/gin-gonic/gin"
+
 type giftService interface {
-	GetGifts()
+	GetGifts(c *gin.Context)
+	ValidateQueryMiddleware(c *gin.Context)
+	SyncGiftsPrices(c *gin.Context)
+	CacheMiddleware(c *gin.Context)
 }
 
 type rateService interface {
-	UpdateRates()
+	UpdateRates(c *gin.Context)
 }
 
 type healthService interface {
-	DBHealth()
+	DBHealth(c *gin.Context)
 }
 
 type UseCase struct {
-	healthSvc healthService
-	rateSvc   rateService
-	giftsvc   giftService
+	HealthSvc healthService
+	RateSvc   rateService
+	Giftsvc   giftService
 }

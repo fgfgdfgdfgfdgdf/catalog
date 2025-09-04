@@ -37,6 +37,7 @@ type Redis struct {
 	USER                  string
 	PASSWORD              string
 	HOST                  string        `yaml:"host"`
+	PORT                  string        `yaml:"port"`
 	ContextCancelSeconds  int64         `yaml:"context_cancel_seconds"`
 	ContextCancelDuration time.Duration `yaml:"-"`
 	Key                   int64         `yaml:"context_cancel_seconds"`

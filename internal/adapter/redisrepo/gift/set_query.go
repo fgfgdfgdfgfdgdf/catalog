@@ -8,8 +8,10 @@ import (
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/entity"
 )
 
-func (r *CacheRepository) SetQuery(q string, res *entity.PaginatedGiftResponse) error {
+func (r *GiftRepository) SetQuery(q string, res *entity.PaginatedGiftResponse) error {
 	c := config.Rds()
+
+	q = giftQueryNamespace + q
 
 	ctx, cancel := context.WithTimeout(context.Background(), c.ContextCancelDuration*time.Second)
 	defer cancel()

@@ -7,7 +7,8 @@ import (
 )
 
 func (s *Service) DBHealth(c *gin.Context) {
-	status := s.healthRepo.CheckStatus()
+	pgStatus := s.postgresRepo.CheckStatus()
+	rdsStatus := s.redisRepo.CheckStatus()
 
-	c.JSON(http.StatusOK, status)
+	c.JSON(http.StatusOK, gin.H{"ok": pgStatus && rdsStatus})
 }

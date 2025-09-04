@@ -1,15 +1,17 @@
 package service_health
 
-type healthRepository interface {
+type HealthChecker interface {
 	CheckStatus() bool
 }
 
 type Service struct {
-	healthRepo healthRepository
+	postgresRepo HealthChecker
+	redisRepo    HealthChecker
 }
 
-func NewService(hr healthRepository) *Service {
+func NewService(pgR HealthChecker, rdsR HealthChecker) *Service {
 	return &Service{
-		healthRepo: hr,
+		postgresRepo: pgR,
+		redisRepo:    rdsR,
 	}
 }
