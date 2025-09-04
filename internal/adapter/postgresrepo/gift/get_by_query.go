@@ -74,7 +74,7 @@ func (r *GiftRepository) GetByQuery(q *entity.GiftQuery) (*entity.PaginatedGiftR
 		Page:      page,
 		Total:     total,
 		PerPage:   perPage,
-		PageCount: int(math.Round(float64(total) / float64(perPage))),
+		PageCount: int(math.Ceil(float64(total) / float64(perPage))),
 	}
 
 	return res, nil
