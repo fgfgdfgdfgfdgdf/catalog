@@ -25,7 +25,7 @@ func (s *Service) ValidateQueryMiddleware(c *gin.Context) {
 		return
 	}
 
-	c.Set("queryParams", &q)
+	c.Set(entity.ContextQueryKey, &q)
 
 	c.Next()
 }

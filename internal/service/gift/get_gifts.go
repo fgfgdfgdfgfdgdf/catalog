@@ -1,6 +1,7 @@
 package gift
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/entity"
@@ -8,7 +9,7 @@ import (
 )
 
 func (s *Service) GetGifts(c *gin.Context) {
-	rawQuery, ok := c.Get("queryParams")
+	rawQuery, ok := c.Get(entity.ContextQueryKey)
 	if !ok {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -24,7 +25,7 @@ func (s *Service) GetGifts(c *gin.Context) {
 
 	err = s.cacheRepo.SetQuery(q.RawQuery, response)
 	if err != nil {
-
+		fmt.Println(err.Error())
 	}
 
 	c.JSON(http.StatusOK, response)

@@ -2,6 +2,7 @@ package cachedGift
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 
 	"github.com/fgfgdfgdfgfdgdf/catalog/internal/config"
@@ -16,12 +17,14 @@ func (r *GiftRepository) GetByQuery(q string) (*entity.PaginatedGiftResponse, er
 
 	var response entity.PaginatedGiftResponse
 
-	cmd := r.db.HGetAll(ctx, q)
-	if cmd.Err() != nil {
-		return nil, cmd.Err()
+	q = giftQueryNamespace + q
+
+	bytes, err := r.db.Get(ctx, q).Bytes()
+	if err != nil {
+		return nil, err
 	}
 
-	err := cmd.Scan(&response)
+	err = json.Unmarshal(bytes, &response)
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Service) CacheMiddleware(c *gin.Context) {
-	rawQuery, ok := c.Get("queryParams")
+	rawQuery, ok := c.Get(entity.ContextQueryKey)
 	if !ok {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

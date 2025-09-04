@@ -40,7 +40,6 @@ type Redis struct {
 	PORT                  string        `yaml:"port"`
 	ContextCancelSeconds  int64         `yaml:"context_cancel_seconds"`
 	ContextCancelDuration time.Duration `yaml:"-"`
-	Key                   int64         `yaml:"context_cancel_seconds"`
 	KeyExpirationDuration time.Duration `yaml:"-"`
 	KeyExpirationSeconds  int64         `yaml:"key_expiration_seconds"`
 }

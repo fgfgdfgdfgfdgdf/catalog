@@ -45,8 +45,9 @@ type GiftQuery struct {
 }
 
 const (
-	descSort = "desc"
-	ascSort  = "asc"
+	descSort        = "desc"
+	ascSort         = "asc"
+	ContextQueryKey = "queryParams"
 )
 
 type CSV []string

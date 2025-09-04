@@ -9,10 +9,10 @@ import (
 func Init(g *gin.Engine, useCase *usecase.UseCase) {
 
 	g.GET("/gifts",
-		useCase.Giftsvc.GetGifts,
-		useCase.Giftsvc.CacheMiddleware,
-		useCase.Giftsvc.ValidateQueryMiddleware,
 		middlewares.RateLimiter,
+		useCase.Giftsvc.ValidateQueryMiddleware,
+		useCase.Giftsvc.CacheMiddleware,
+		useCase.Giftsvc.GetGifts,
 	)
 
 	g.GET("/healthz", useCase.HealthSvc.DBHealth)
