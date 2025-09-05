@@ -10,7 +10,7 @@ type Rate struct {
 	CreatedAt  pgtype.Timestamptz `gorm:"type:timestamptz; default:now(); not null"`
 }
 
-type RateForm struct {
+type RateBody struct {
 	UsdPerTon  string `form:"usdPerTon"`
 	UsdPerStar string `form:"usdPerStar"`
 }

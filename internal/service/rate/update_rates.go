@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Service) UpdateRates(c *gin.Context) {
-	var body entity.RateForm
+	var body entity.RateBody
 
 	if err := c.ShouldBind(&body); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
